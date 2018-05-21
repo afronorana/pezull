@@ -1,0 +1,19 @@
+{
+  "name": "pezull",
+  "version": "1.0.0",
+  "description": "Mobile hover states made easy",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/afronorana/pezull.git"
+  },
+  "author": "Afron Orana",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/afronorana/pezull/issues"
+  },
+  "homepage": "https://github.com/afronorana/pezull#readme"
+}
