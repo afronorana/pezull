@@ -1,61 +1,105 @@
-# Pezull
 
-Pezull is a Javascript library which makes it easy to add 'hover' effects on touch devices.
+# Pezull.js
+
+Pezull.js is a Javascript library which simulates hover effect on touch devices
+It works by selecting the 'active area', where the selected class is added to the elements entering it.
 
 ## Installation
 
-Use the package manager [npm](https://#/) to install Pezull.
+Install pezull.js using your favorite package manager.
 
-```bash
+#### Install with [npm](https://www.npmjs.com/):
+
+```
 npm install pezull
 ```
+#### Install with [yarn](https://yarnpkg.com):
+
+```
+yarn add pezull
+```
+
+#### Using with cdn
+
+[https://unpkg.com/pezull](https://unpkg.com/pezull)
+
+## How it works
+
+Pezull.js sets an _active area_, and on scroll listens for elements with the 'pezull' class to enter it. On enter, the class 'hovering' is added to those elements, and on leave, it is removed.
+_pezull_ and _hovering_ are the default classes and can be altered by passing them on the options object.
 
 ## Usage
 
-Add HTML element
+Import the library:
 
-```html
-<div id='pezull-area'></>
-```
-Then import and init the library
 ```javascript
-import pezull
+var Pezull = require('pezull').default;
+```
+Initialize it:
+```
+Pezull();
+```
 
-Pezull('#pezull-area');
+Add your custom css to the active class
+```
+.hovering {  
+    background: rebeccapurple;
+    color: white;
+}
 ```
 
 ## Options
 
-Pezull at the moment is very limited, and offers only three options which can be seen below
+Pezull accepts an options object to alter the way it works. You can see the default options below
+
 ```javascript
 
-Pezull('#pezull-area', {
+Pezull({
+    activeAreaTop: '20vh',
+    activeAreaHeight: '60vh',
     breakpoint: 767,
-    classes: {
-        active: 'pezull-active',
-    },
-    activeArea: 80
+    activeClass: 'hovering',
+    listenerClass: 'pezull',
+    dev: false,
+    touchOnly: false
 });
 ```
-### breakpoint
-Breakpint accepts a number from where the pezull is inited.
 
-### dev
-dev accepts a boolean, when set to true, an active-area div is drawn
+#### activeAreaTop
+_default: : '20vh'_
+Sets the offset of the active area from the top of the screen.
+Accepts a _{number}_ or a _{String}_ of css units (at the moment supports 'px', 'vw', and 'vh')
+When passing a number, it will be considered as pixels.
 
+#### activeAreaHeight
+_default: : '60vh'_
+Sets the height of the active area.
+Accepts a _{number}_ or a _{String}_ of css units (at the moment supports 'px', 'vw', and 'vh')
+When passing a number, it will be considered as pixels.
 
-### classes
-classes object has the classnames that are attached to the elements on different cases, explained below.
+#### breakpoint
+_default: : 767_
+Sets the maximum width of the viewport for pezull to be initialized.
+Accepts a _{number}_ which is considered as pixels.
 
-    active: 'pezull-active' // Contains the class that is binded to the elements that enter the active area
+#### activeClass
+_default: : 'hovering'_
+Class which will be added to the elements that are inside the active area.
+Accepts a _{String}_.
 
-### activeArea
-Accepts a number 1-100, which is the percentage of the active area height.
+#### listenerClass
+_default: : 'pezull'_
+Class which needs to be added to the chosen elements, for the active class to be added to them on enter of the active area.
+Accepts a _{String}_.
+
+#### dev
+_default: : false_
+Visualizes the active area to make implementation easier.
+Accepts a _{boolean}_.
+
+#### touchOnly
+_default: : true_
+Initializes pezull only if its on a touch device.
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
-
-Please make sure to update tests as appropriate.
-
-## License
-[MIT](https://choosealicense.com/licenses/mit/)

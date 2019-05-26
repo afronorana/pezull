@@ -7,6 +7,7 @@ const Pezull = {
    * and inits activateClases()
    * @param {Object} options
    */
+
   default: (options) => {
     let _options = {
       activeAreaTop: 50,
@@ -15,7 +16,7 @@ const Pezull = {
       activeClass: 'hovering',
       listenerClass: 'pezull',
       dev: false,
-      touchOnly: false
+      touchOnly: false,
     };
 
     options = Object.assign(_options, options);
@@ -113,7 +114,7 @@ const Pezull = {
         }
       }
     });
-  }
+  },
 };
 
 module.exports.default = Pezull.default;
