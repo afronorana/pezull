@@ -40,6 +40,10 @@ Pezull('#pezull-area', {
 ### breakpoint
 Breakpint accepts a number from where the pezull is inited.
 
+### dev
+dev accepts a boolean, when set to true, an active-area div is drawn
+
+
 ### classes
 classes object has the classnames that are attached to the elements on different cases, explained below.
 
