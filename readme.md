@@ -3,6 +3,7 @@
 
 Pezull.js is a Javascript library which simulates hover effect on touch devices
 It works by selecting the 'active area', where the selected class is added to the elements entering it.
+#### [Demo](https://jsfiddle.net/mny9fox8/5/)
 
 ## Installation
 
@@ -94,7 +95,7 @@ Accepts a _{String}_.
 
 #### dev
 _default: : false_
-Visualizes the active area to make implementation easier.
+Visualizes the ac21tive area to make implementation easier.
 Accepts a _{boolean}_.
 
 #### touchOnly
