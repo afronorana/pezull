@@ -1,6 +1,6 @@
 {
   "name": "pezull",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Mobile hover states made easy",
   "main": "index.js",
   "scripts": {
