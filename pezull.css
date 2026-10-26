@@ -1,0 +1,56 @@
+/*!
+ * pezull.css: simulate hover on touch devices.
+ * While the top edge of a `.pezull` element is inside the active area,
+ * `--pezull` is 1 on it and its descendants; otherwise 0.
+ * Style descendants with `@container style(--pezull: 1) { ... }`.
+ * https://github.com/afronorana/pezull (ISC)
+ */
+
+@property --pezull {
+  syntax: '<integer>';
+  inherits: true;
+  initial-value: 0;
+}
+
+:root {
+  /* Active area, as percentages of the viewport height */
+  --pezull-area-top: 20%;
+  --pezull-area-height: 60%;
+}
+
+@keyframes pezull {
+  from, to { --pezull: 1; }
+}
+
+@supports (animation-timeline: view()) {
+  .pezull {
+    animation-name: none;
+    animation-duration: auto;
+    animation-fill-mode: none; /* off outside the area */
+    animation-timeline: view(block var(--pezull-area-top)
+      calc(100% - var(--pezull-area-top) - var(--pezull-area-height)));
+    /* on while the element's top edge is inside the area */
+    animation-range: entry-crossing 0% exit-crossing 0%;
+  }
+
+  /* Only devices that cannot hover, unless debugging */
+  @media (hover: none) {
+    .pezull { animation-name: pezull; }
+  }
+
+  :root.pezull-dev .pezull { animation-name: pezull; }
+}
+
+/* Set by the IntersectionObserver fallback (pezull.js) */
+.pezull.pezull-active { --pezull: 1; }
+
+/* Visualise the active area */
+:root.pezull-dev body::after {
+  content: '';
+  position: fixed;
+  inset: var(--pezull-area-top) 0 auto;
+  height: var(--pezull-area-height);
+  pointer-events: none;
+  z-index: 2147483647;
+  background: repeating-linear-gradient(45deg, #f004 0 20px, transparent 0 40px);
+}
