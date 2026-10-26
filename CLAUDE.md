@@ -16,14 +16,6 @@ The entire library is `index.js`. There is no build step, bundler, transpiler, l
 - `convertTopPx` turns a number (px) or a `'px' | 'vw' | 'vh'` string into integer pixels; any other unit throws a string.
 - Elements are collected with `getElementsByClassName` (a live collection), so elements added after init are picked up.
 
-## Known inconsistencies between code and README
-
-Check these before "fixing" docs or behavior — decide which side is correct:
-
-- Default `activeAreaTop` / `activeAreaHeight` are `50` / `40` (px) in code, but the README documents `'20vh'` / `'60vh'`.
-- The breakpoint check reads `options.break`, but the option is named `breakpoint`, so the breakpoint is effectively never applied.
-- `touchOnly` defaults to `false` in code; the README contradicts itself (`false` in the options example, `true` in the option description).
-
 ## Releasing
 
 Releases are version-bump commits (e.g. `1.0.6`), i.e. `npm version patch` followed by `npm publish`. Keep `readme.md` in sync with option changes since it is the npm package page.

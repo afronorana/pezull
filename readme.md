@@ -95,11 +95,11 @@ Accepts a _{String}_.
 
 #### dev
 _default: : false_
-Visualizes the ac21tive area to make implementation easier.
+Visualizes the active area to make implementation easier.
 Accepts a _{boolean}_.
 
 #### touchOnly
-_default: : true_
+_default: : false_
 Initializes pezull only if its on a touch device.
 
 ## Contributing

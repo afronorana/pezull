@@ -10,8 +10,8 @@ const Pezull = {
 
   default: (options) => {
     let _options = {
-      activeAreaTop: 50,
-      activeAreaHeight: 40,
+      activeAreaTop: '20vh',
+      activeAreaHeight: '60vh',
       breakpoint: 767,
       activeClass: 'hovering',
       listenerClass: 'pezull',
@@ -21,7 +21,7 @@ const Pezull = {
 
     options = Object.assign(_options, options);
 
-    if (Pezull.windowWidth > options.break) return;
+    if (Pezull.windowWidth > options.breakpoint) return;
     if (options.touchOnly && !Pezull.isTouchDevice()) return;
     if (options.dev) {Pezull.showDevArea(options);}
 
