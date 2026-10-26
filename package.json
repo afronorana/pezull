@@ -1,6 +1,6 @@
 {
   "name": "pezull",
-  "version": "2.0.1",
+  "version": "2.1.0",
   "description": "Simulate hover on touch devices with CSS scroll-driven animations",
   "type": "module",
   "main": "./pezull.js",
