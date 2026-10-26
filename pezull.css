@@ -24,13 +24,25 @@
 
 @supports (animation-timeline: view()) {
   .pezull {
+    timeline-scope: --pezull-edge;
     animation-name: none;
     animation-duration: auto;
     animation-fill-mode: none; /* off outside the area */
-    animation-timeline: view(block var(--pezull-area-top)
-      calc(100% - var(--pezull-area-top) - var(--pezull-area-height)));
-    /* on while the element's top edge is inside the area */
-    animation-range: entry-crossing 0% exit-crossing 0%;
+    animation-timeline: --pezull-edge;
+  }
+
+  /* A zero-height marker at the element's top edge is what gets measured, so
+     effects that resize the element can't feed back into its own state.
+     Being zero-height, it is on for exactly its default `cover` range. */
+  .pezull::before {
+    content: '';
+    position: absolute;
+    height: 0;
+    align-self: start;
+    justify-self: start;
+    view-timeline: --pezull-edge block;
+    view-timeline-inset: var(--pezull-area-top)
+      calc(100% - var(--pezull-area-top) - var(--pezull-area-height));
   }
 
   /* Only devices that cannot hover, unless debugging */

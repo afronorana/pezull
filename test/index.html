@@ -4,14 +4,22 @@
 <title>pezull tests</title>
 <link rel="stylesheet" href="../pezull.css">
 <style>
-  body { margin: 0; height: 6000px; }
+  body { margin: 0; min-height: 6000px; }
   .pezull { position: absolute; left: 0; width: 100px; opacity: calc(0.5 + var(--pezull) * 0.5); }
   #short { top: 2000px; height: 100px; }
   #tall { top: 4000px; height: 900px; }
-  @container style(--pezull: 1) { .child { color: rgb(255, 0, 0); } }
+  /* Grows while active: the state must not feed back into the measurement */
+  #grow { position: static; margin-top: 5500px; }
+  #grow .child { display: block; height: 100px; }
+  @container style(--pezull: 1) {
+    .child { color: rgb(255, 0, 0); }
+    #grow .child { height: 300px; }
+  }
 </style>
 <div class="pezull" id="short"><span class="child">a</span></div>
 <div class="pezull" id="tall"><span class="child">b</span></div>
+<div class="pezull" id="grow"><span class="child">c</span></div>
+<div style="height: 2000px"></div>
 <pre id="out">pending</pre>
 <script type="module">
   const params = new URLSearchParams(location.search);
@@ -31,12 +39,15 @@
     ['short', 0.10, 0], ['short', 0.19, 0], ['short', 0.21, 1], ['short', 0.50, 1],
     ['short', 0.79, 1], ['short', 0.81, 0], ['short', 0.95, 0],
     ['tall', 0.30, 1], ['tall', 0.79, 1], ['tall', 0.10, 0], ['tall', -0.5, 0], ['tall', 0.90, 0],
+    ['grow', 0.25, 1], ['grow', 0.15, 0], ['grow', 0.75, 1], ['grow', 0.85, 0],
   ];
   const results = [];
   for (const [id, y, expected] of cases) {
     const el = document.getElementById(id);
     scrollBy(0, el.getBoundingClientRect().top - y * vh);
     await frame(); await frame();
+    // Let any feedback between the state and the layout play out
+    await new Promise(r => setTimeout(r, 500));
     const prop = getComputedStyle(el).getPropertyValue('--pezull').trim();
     const styled = getComputedStyle(el.firstElementChild).color === 'rgb(255, 0, 0)' ? 1 : 0;
     const self = getComputedStyle(el).opacity === '1' ? 1 : 0;
