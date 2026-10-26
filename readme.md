@@ -2,6 +2,8 @@
 
 Hover effects for touch devices. While an element scrolls through the middle of the screen, Pezull treats it as hovered, so touch users see the same effect mouse users get on hover.
 
+**[Try the demo](https://afronorana.github.io/pezull/)** on your phone.
+
 It is a stylesheet: a CSS scroll-driven animation detects when an element's top edge is inside the *active area* (by default 20%–80% of the viewport height). An optional 3 kB script covers browsers without scroll-driven animations.
 
 ## Install

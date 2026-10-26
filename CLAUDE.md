@@ -20,6 +20,8 @@ The state is the registered custom property `--pezull` (`<integer>`, inherits, i
 - **`pezull.js`** (fallback, ESM default export, returns a stop function): no-op when `CSS.supports('animation-timeline: view()')`. Otherwise, under the same gate, two IntersectionObservers (the area, and the strip above it) mark an element active when it intersects the area but not the strip; it toggles `.pezull-active`, which `pezull.css` maps to `--pezull: 1`. A MutationObserver picks up added/removed elements. Area percentages are read from the root's custom properties, so CSS stays the single source of config.
 - Known divergence: `view()` binds to the nearest scroll container, the fallback always to the viewport.
 
+- **`demo/index.html`** loads `../pezull.css` and `../pezull.js`. `.github/workflows/pages.yml` deploys it to GitHub Pages on pushes to `main`, copying the library next to it and rewriting those paths to `./`. It is excluded from npm by the `files` allowlist.
+
 When changing behavior, keep CSS and fallback semantics identical and extend `test/index.html` cases for both.
 
 ## Releasing
