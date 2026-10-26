@@ -96,6 +96,7 @@ The script does nothing in browsers where the CSS works on its own. The lower li
 ## Limitations
 
 - The active area is measured against the element's nearest scroll container. An ancestor with `overflow: hidden` becomes that container; use `overflow: clip` instead. The fallback always measures against the viewport.
+- Pezull uses the element's `::before` pseudo-element as a zero-height marker at its top edge, so don't style `.pezull::before` yourself. Because the marker sits inside the element's padding, the active area is measured from the top of the content box.
 - The state is a custom property, not a class, so it can't be selected from JavaScript. With the fallback active, elements also get the `pezull-active` class.
 
 ## Development
