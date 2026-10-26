@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Overview
 
-Pezull (npm `pezull`, also served via unpkg) simulates hover on touch devices: while a `.pezull` element's top edge is inside an "active area" of the viewport (default 20%–80% of its height), it is treated as hovered. There is no build step and no dependencies; the published package is just `pezull.css` and `pezull.js` (see `files` in `package.json`).
+Pezull (npm `pezull`, also served via unpkg) simulates hover on touch devices: while a `.pezull` element's top edge is inside an "active area" of the viewport (default 20%–60% of its height), it is treated as hovered. There is no build step and no dependencies; the published package is just `pezull.css` and `pezull.js` (see `files` in `package.json`).
 
 ## Commands
 

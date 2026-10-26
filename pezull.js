@@ -48,7 +48,7 @@ function observe() {
     return Number.isNaN(value) ? fallback : value;
   };
   const top = percent('--pezull-area-top', 20);
-  const bottom = 100 - top - percent('--pezull-area-height', 60);
+  const bottom = 100 - top - percent('--pezull-area-height', 40);
 
   const state = new Map();
   const toggle = (key) => (entries) => {

@@ -4,7 +4,7 @@ Hover effects for touch devices. While an element scrolls through the middle of 
 
 **[Try the demo](https://afronorana.github.io/pezull/)** on your phone.
 
-It is a stylesheet: a CSS scroll-driven animation detects when an element's top edge is inside the *active area* (by default 20%–80% of the viewport height). An optional 3 kB script covers browsers without scroll-driven animations.
+It is a stylesheet: a CSS scroll-driven animation detects when an element's top edge is inside the *active area* (by default 20%–60% of the viewport height). An optional 3 kB script covers browsers without scroll-driven animations.
 
 ## Install
 
@@ -72,7 +72,7 @@ Set these custom properties on `:root`. Both are percentages of the viewport hei
 | Property | Default | |
 |---|---|---|
 | `--pezull-area-top` | `20%` | Distance of the active area from the top of the viewport |
-| `--pezull-area-height` | `60%` | Height of the active area |
+| `--pezull-area-height` | `40%` | Height of the active area |
 
 Pezull only runs on devices that can't hover, i.e. `@media (hover: none)`. Phones and tablets match; a laptop with a touchscreen or an iPad with a trackpad doesn't, because those users can hover for real.
 

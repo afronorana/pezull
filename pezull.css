@@ -15,7 +15,7 @@
 :root {
   /* Active area, as percentages of the viewport height */
   --pezull-area-top: 20%;
-  --pezull-area-height: 60%;
+  --pezull-area-height: 40%;
 }
 
 @keyframes pezull {
