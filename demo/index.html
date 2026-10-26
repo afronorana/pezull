@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pezull demo</title>
+<meta name="description" content="Hover effects for touch screens, in CSS. Scroll on a phone to see them.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,200..800&display=swap">
+<link rel="stylesheet" href="../pezull.css">
+<style>
+  :root {
+    --mist: #dde5e8;
+    --ink: #16242e;
+    --ink-soft: #4a5b66;
+    --card: #f6f9fa;
+    --cobalt: #2b3be0;
+    --marigold: #f2b705;
+    --ease: cubic-bezier(.2, .7, .2, 1);
+    color-scheme: light;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--mist);
+    color: var(--ink);
+    font: 1.0625rem/1.6 'Atkinson Hyperlegible', system-ui, sans-serif;
+  }
+
+  main { max-width: 38rem; margin: 0 auto; padding: 0 1.25rem; }
+
+  h1, h2 { font-family: 'Bricolage Grotesque', system-ui, sans-serif; line-height: 1.05; margin: 0; }
+  h2 { font-size: 1.75rem; font-weight: 700; font-stretch: 85%; letter-spacing: -0.01em; }
+  p { margin: 0 0 1em; }
+  a { color: inherit; }
+  :focus-visible { outline: 3px solid var(--cobalt); outline-offset: 3px; }
+
+  code, pre { font: 0.875rem/1.55 ui-monospace, 'SF Mono', Menlo, monospace; }
+  pre {
+    margin: 0;
+    padding: 1rem 1.125rem;
+    background: var(--ink);
+    color: var(--card);
+    border-radius: 6px;
+    overflow-x: auto;
+  }
+
+  /* Hero: the word itself is a .pezull element */
+  .hero { min-height: 92svh; display: flex; flex-direction: column; justify-content: center; padding: 3rem 0 6rem; }
+  .hero h1 { font-size: clamp(5rem, 26vw, 11rem); letter-spacing: -0.04em; }
+  .word {
+    display: inline-block;
+    font-weight: 250;
+    font-stretch: 75%;
+    transform: translateY(0);
+  }
+  .hero p { font-size: 1.25rem; max-width: 30ch; margin-top: 1.5rem; }
+  .hero .hint { font-size: 1rem; color: var(--ink-soft); max-width: 40ch; }
+
+  .pezull:hover .word { font-weight: 800; font-stretch: 100%; transform: translateY(-0.06em); color: var(--cobalt); }
+  @container style(--pezull: 1) {
+    .word { font-weight: 800; font-stretch: 100%; transform: translateY(-0.06em); color: var(--cobalt); }
+  }
+
+  /* Effects */
+  .effects { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: 22vh; }
+  .effect h2 { margin-bottom: 0.5rem; }
+  .effect > p { color: var(--ink-soft); }
+  .stage {
+    position: relative;
+    display: block;
+    margin: 1.25rem 0 1rem;
+    padding: 1.5rem;
+    background: var(--card);
+    border-radius: 6px;
+    text-decoration: none;
+    overflow: clip;
+  }
+  .stage strong { font: 700 1.5rem/1.2 'Bricolage Grotesque', system-ui, sans-serif; }
+
+  /* Fill */
+  .fill .stage::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--cobalt);
+    transform: scaleX(0);
+    transform-origin: left;
+  }
+  .fill .stage > * { position: relative; }
+  .fill .stage:hover::before { transform: scaleX(1); }
+  .fill .stage:hover { color: var(--card); }
+  @container style(--pezull: 1) {
+    .fill .stage::before { transform: scaleX(1); }
+    .fill .stage { color: var(--card); }
+  }
+
+  /* Underline */
+  .underline .stage strong {
+    background: linear-gradient(var(--cobalt), var(--cobalt)) left bottom / 0 3px no-repeat;
+    padding-bottom: 2px;
+  }
+  .underline .stage:hover strong { background-size: 100% 3px; }
+  @container style(--pezull: 1) {
+    .underline .stage strong { background-size: 100% 3px; }
+  }
+
+  /* Reveal */
+  .reveal .more { display: grid; grid-template-rows: 0fr; }
+  .reveal .more > p { overflow: hidden; margin: 0; }
+  .reveal .stage:hover .more { grid-template-rows: 1fr; }
+  @container style(--pezull: 1) {
+    .reveal .more { grid-template-rows: 1fr; }
+  }
+
+  /* Lift */
+  .lift .stage { box-shadow: 0 0 0 transparent; }
+  .lift .stage:hover { transform: translateY(-6px); box-shadow: 0 14px 28px -12px rgb(22 36 46 / .35); }
+  @container style(--pezull: 1) {
+    .lift .stage { transform: translateY(-6px); box-shadow: 0 14px 28px -12px rgb(22 36 46 / .35); }
+  }
+
+  /* Swap */
+  .swap .stage { display: grid; }
+  .swap .stage > * { grid-area: 1 / 1; }
+  .swap .after { visibility: hidden; color: var(--cobalt); }
+  .swap .stage:hover .before { visibility: hidden; }
+  .swap .stage:hover .after { visibility: visible; }
+  @container style(--pezull: 1) {
+    .swap .before { visibility: hidden; }
+    .swap .after { visibility: visible; }
+  }
+
+  /* Self: the .pezull element itself, through var() */
+  .self .stage { opacity: calc(0.35 + var(--pezull) * 0.65); }
+  .self .stage:hover { opacity: 1; }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .word { transition: font-weight .5s var(--ease), font-stretch .5s var(--ease), transform .5s var(--ease), color .5s; }
+    .fill .stage::before { transition: transform .45s var(--ease); }
+    .fill .stage, .stage strong { transition: color .3s, background-size .45s var(--ease); }
+    .reveal .more { transition: grid-template-rows .45s var(--ease); }
+    .lift .stage { transition: transform .35s var(--ease), box-shadow .35s var(--ease); }
+    .self .stage { transition: opacity .35s; }
+  }
+
+  /* Install */
+  .install { margin: 30vh 0 0; padding-bottom: 6rem; }
+  .install h2 { margin: 2.5rem 0 0.75rem; }
+  .install pre { white-space: pre-wrap; overflow-wrap: anywhere; }
+
+  /* Dev mode toggle */
+  .toggle {
+    position: fixed;
+    right: 1rem;
+    bottom: 1rem;
+    z-index: 1;
+    padding: 0.625rem 1rem;
+    border: 2px solid var(--ink);
+    border-radius: 999px;
+    background: var(--card);
+    color: var(--ink);
+    font: 700 0.9375rem/1 'Atkinson Hyperlegible', system-ui, sans-serif;
+    cursor: pointer;
+  }
+  .toggle[aria-pressed='true'] { background: var(--marigold); }
+  :root.pezull-dev body::after {
+    background: repeating-linear-gradient(-45deg, rgb(242 183 5 / .22) 0 14px, transparent 0 28px);
+    border-block: 2px dashed var(--marigold);
+  }
+
+  footer { padding: 2rem 0 5rem; color: var(--ink-soft); font-size: 0.9375rem; }
+</style>
+</head>
+<body>
+<main>
+  <header class="hero">
+    <h1 class="pezull"><span class="word">pezull</span></h1>
+    <p>Hover effects for touch screens. Scroll, and whatever reaches the middle of the screen acts hovered.</p>
+    <p class="hint">On a computer, hover with your mouse, or turn on the active area below and scroll.</p>
+  </header>
+
+  <ol class="effects">
+    <li class="effect fill">
+      <h2>Fill</h2>
+      <p>A colour sweeps in behind the card.</p>
+      <div class="pezull"><a class="stage" href="#fill" id="fill"><strong>Spring timetable</strong><br><span>Ferries to Sarandë, every two hours</span></a></div>
+      <pre><code>@container style(--pezull: 1) {
+  .stage::before { transform: scaleX(1); }
+}</code></pre>
+    </li>
+
+    <li class="effect underline">
+      <h2>Underline</h2>
+      <p>A link announces itself before it is tapped.</p>
+      <div class="pezull"><a class="stage" href="#underline" id="underline"><strong>Read the full guide</strong></a></div>
+      <pre><code>@container style(--pezull: 1) {
+  strong { background-size: 100% 3px; }
+}</code></pre>
+    </li>
+
+    <li class="effect reveal">
+      <h2>Reveal</h2>
+      <p>Details that would appear on hover open up instead.</p>
+      <div class="pezull"><div class="stage" id="reveal">
+        <strong>Byrek me spinaq</strong>
+        <div class="more"><p>Spinach and gjizë in hand-stretched pastry. Baked every morning, gone by noon.</p></div>
+      </div></div>
+      <pre><code>@container style(--pezull: 1) {
+  .more { grid-template-rows: 1fr; }
+}</code></pre>
+    </li>
+
+    <li class="effect lift">
+      <h2>Lift</h2>
+      <p>The card rises off the page.</p>
+      <div class="pezull"><a class="stage" href="#lift" id="lift"><strong>Theth, 3 nights</strong><br><span>Guesthouse with breakfast and a mountain guide</span></a></div>
+      <pre><code>@container style(--pezull: 1) {
+  .stage { transform: translateY(-6px); }
+}</code></pre>
+    </li>
+
+    <li class="effect swap">
+      <h2>Swap</h2>
+      <p>Discrete properties like <code>visibility</code> switch too.</p>
+      <div class="pezull"><div class="stage" id="swap"><strong class="before">Tap to add to basket</strong><strong class="after">Added once you tap</strong></div></div>
+      <pre><code>@container style(--pezull: 1) {
+  .before { visibility: hidden; }
+  .after { visibility: visible; }
+}</code></pre>
+    </li>
+
+    <li class="effect self">
+      <h2>On the element itself</h2>
+      <p>Style queries reach children. For the <code>.pezull</code> element itself, use <code>--pezull</code> as a number.</p>
+      <div class="stage pezull" id="self"><strong>Fades in while centred</strong></div>
+      <pre><code>.pezull { opacity: calc(0.35 + var(--pezull) * 0.65); }</code></pre>
+    </li>
+  </ol>
+
+  <section class="install" id="install">
+    <h2>Use it</h2>
+    <p>Load the stylesheet and the fallback for older browsers:</p>
+    <pre><code>&lt;link rel="stylesheet" href="https://unpkg.com/pezull@2/pezull.css"&gt;
+&lt;script type="module"&gt;
+  import pezull from 'https://unpkg.com/pezull@2/pezull.js';
+  pezull();
+&lt;/script&gt;</code></pre>
+    <p style="margin-top: 1rem">Add <code>class="pezull"</code> to an element and style its children inside <code>@container style(--pezull: 1)</code>. Options, browser support and an install prompt for coding agents are in the <a href="https://github.com/afronorana/pezull#readme">README</a>.</p>
+  </section>
+
+  <footer>
+    <a href="https://github.com/afronorana/pezull">Source on GitHub</a>. ISC licence.
+  </footer>
+</main>
+
+<button class="toggle" type="button" aria-pressed="false">Show active area</button>
+
+<script type="module">
+  import pezull from '../pezull.js';
+
+  let stop = pezull();
+  const toggle = document.querySelector('.toggle');
+  toggle.addEventListener('click', () => {
+    const on = document.documentElement.classList.toggle('pezull-dev');
+    toggle.setAttribute('aria-pressed', on);
+    toggle.textContent = on ? 'Hide active area' : 'Show active area';
+    // The fallback reads dev mode when it starts
+    stop();
+    stop = pezull();
+  });
+</script>
+</body>
+</html>
