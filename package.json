@@ -1,6 +1,6 @@
 {
   "name": "pezull",
-  "version": "1.0.6",
+  "version": "1.1.0",
   "description": "Simulate hover effect on touch devices",
   "main": "index.js",
   "scripts": {
