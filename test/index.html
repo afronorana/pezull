@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="../pezull.css">
 <style>
   body { margin: 0; height: 6000px; }
-  .pezull { position: absolute; left: 0; width: 100px; }
+  .pezull { position: absolute; left: 0; width: 100px; opacity: calc(0.5 + var(--pezull) * 0.5); }
   #short { top: 2000px; height: 100px; }
   #tall { top: 4000px; height: 900px; }
   @container style(--pezull: 1) { .child { color: rgb(255, 0, 0); } }
@@ -39,9 +39,10 @@
     await frame(); await frame();
     const prop = getComputedStyle(el).getPropertyValue('--pezull').trim();
     const styled = getComputedStyle(el.firstElementChild).color === 'rgb(255, 0, 0)' ? 1 : 0;
+    const self = getComputedStyle(el).opacity === '1' ? 1 : 0;
     const active = el.classList.contains('pezull-active') ? 1 : 0;
-    const ok = String(expected) === prop && expected === styled && (!fallback || expected === active);
-    results.push(`${ok ? 'PASS' : 'FAIL'} ${id} top=${Math.round(y * 100)}% expected=${expected} --pezull=${prop} styled=${styled}`);
+    const ok = String(expected) === prop && expected === styled && expected === self && (!fallback || expected === active);
+    results.push(`${ok ? 'PASS' : 'FAIL'} ${id} top=${Math.round(y * 100)}% expected=${expected} --pezull=${prop} styled=${styled} self=${self}`);
   }
   document.getElementById('out').textContent = results.join('\n');
 </script>

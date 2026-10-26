@@ -63,7 +63,7 @@ for (const [label, query, allOff] of [
   }
   let lines = out.split('\n');
   if (allOff) {
-    lines = lines.map((l) => l.includes('styled=0') && l.includes('--pezull=0')
+    lines = lines.map((l) => l.includes('styled=0 self=0') && l.includes('--pezull=0')
       ? l.replace('FAIL', 'PASS') : l.replace('PASS', 'FAIL'));
   }
   if (out === 'pending' || lines.some((l) => l.startsWith('FAIL'))) failed = true;

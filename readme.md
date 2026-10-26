@@ -1,106 +1,113 @@
+# Pezull
 
-# Pezull.js
+Hover effects for touch devices. While an element scrolls through the middle of the screen, Pezull treats it as hovered, so touch users see the same effect mouse users get on hover.
 
-Pezull.js is a Javascript library which simulates hover effect on touch devices
-It works by selecting the 'active area', where the selected class is added to the elements entering it.
-#### [Demo](https://jsfiddle.net/mny9fox8/5/)
+It is a stylesheet: a CSS scroll-driven animation detects when an element's top edge is inside the *active area* (by default 20%–80% of the viewport height). An optional 3 kB script covers browsers without scroll-driven animations.
 
-## Installation
+## Install
 
-Install pezull.js using your favorite package manager.
+### With a coding agent
 
-#### Install with [npm](https://www.npmjs.com/):
+Paste this into Claude Code, Cursor, or any coding agent working in your project:
 
+```text
+Install pezull (https://github.com/afronorana/pezull#readme) in this project.
+Add the `pezull` npm package, or the unpkg links if the project has no build step.
+Load `pezull/pezull.css` globally and call the default export of `pezull` once on
+the client to enable the fallback. Add the `pezull` class to the elements that
+should react while scrolled into the middle of the screen, and move their
+touch-hover styles into `@container style(--pezull: 1) { ... }` rules that
+target the element's children.
 ```
-npm install pezull
+
+### From a CDN
+
+```html
+<link rel="stylesheet" href="https://unpkg.com/pezull@2/pezull.css">
+<script type="module">
+  import pezull from 'https://unpkg.com/pezull@2/pezull.js';
+  pezull();
+</script>
 ```
-#### Install with [yarn](https://yarnpkg.com):
 
-```
-yarn add pezull
-```
-
-#### Using with cdn
-
-[https://unpkg.com/pezull](https://unpkg.com/pezull)
-
-## How it works
-
-Pezull.js sets an _active area_, and on scroll listens for elements with the 'pezull' class to enter it. On enter, the class 'hovering' is added to those elements, and on leave, it is removed.
-_pezull_ and _hovering_ are the default classes and can be altered by passing them on the options object.
+With a bundler, `import 'pezull/pezull.css'` and `import pezull from 'pezull'`.
 
 ## Usage
 
-Import the library:
+Add the `pezull` class to the elements that should react:
 
-```javascript
-var Pezull = require('pezull').default;
-```
-Initialize it:
-```
-Pezull();
+```html
+<a class="pezull" href="/product">
+  <div class="card">…</div>
+</a>
 ```
 
-Add your custom css to the active class
-```
-.hovering {  
-    background: rebeccapurple;
-    color: white;
+Style their children with a container style query. Pezull sets `--pezull: 1` on the element and everything inside it while it is in the active area, and `0` otherwise:
+
+```css
+@container style(--pezull: 1) {
+  .card { background: rebeccapurple; color: white; }
 }
 ```
 
-## Options
+To share styles with real hover:
 
-Pezull accepts an options object to alter the way it works. You can see the default options below
-
-```javascript
-
-Pezull({
-    activeAreaTop: '20vh',
-    activeAreaHeight: '60vh',
-    breakpoint: 767,
-    activeClass: 'hovering',
-    listenerClass: 'pezull',
-    dev: false,
-    touchOnly: false
-});
+```css
+.pezull:hover .card { background: rebeccapurple; color: white; }
+@container style(--pezull: 1) {
+  .card { background: rebeccapurple; color: white; }
+}
 ```
 
-#### activeAreaTop
-_default: : '20vh'_
-Sets the offset of the active area from the top of the screen.
-Accepts a _{number}_ or a _{String}_ of css units (at the moment supports 'px', 'vw', and 'vh')
-When passing a number, it will be considered as pixels.
+A style query styles descendants, not the `.pezull` element itself. To change the element itself, use `--pezull` as a number, for example `opacity: calc(0.5 + var(--pezull) * 0.5)`.
 
-#### activeAreaHeight
-_default: : '60vh'_
-Sets the height of the active area.
-Accepts a _{number}_ or a _{String}_ of css units (at the moment supports 'px', 'vw', and 'vh')
-When passing a number, it will be considered as pixels.
+For a smooth change, add a `transition` to the children's styles. Wrap it in `@media (prefers-reduced-motion: no-preference)` if it involves movement.
 
-#### breakpoint
-_default: : 767_
-Sets the maximum width of the viewport for pezull to be initialized.
-Accepts a _{number}_ which is considered as pixels.
+## Options
 
-#### activeClass
-_default: : 'hovering'_
-Class which will be added to the elements that are inside the active area.
-Accepts a _{String}_.
+Set these custom properties on `:root`. Both are percentages of the viewport height.
 
-#### listenerClass
-_default: : 'pezull'_
-Class which needs to be added to the chosen elements, for the active class to be added to them on enter of the active area.
-Accepts a _{String}_.
+| Property | Default | |
+|---|---|---|
+| `--pezull-area-top` | `20%` | Distance of the active area from the top of the viewport |
+| `--pezull-area-height` | `60%` | Height of the active area |
 
-#### dev
-_default: : false_
-Visualizes the active area to make implementation easier.
-Accepts a _{boolean}_.
+Pezull only runs on devices that can't hover, i.e. `@media (hover: none)`. Phones and tablets match; a laptop with a touchscreen or an iPad with a trackpad doesn't, because those users can hover for real.
 
-#### touchOnly
-_default: : false_
-Initializes pezull only if its on a touch device.
+### Dev mode
+
+Add the `pezull-dev` class to `<html>` to run Pezull on any device and draw the active area:
+
+```html
+<html class="pezull-dev">
+```
+
+## Browser support
+
+| | Chrome / Edge | Safari / iOS | Firefox |
+|---|---|---|---|
+| CSS only | 115+ | 26+ | 159+ |
+| With `pezull.js` | 111+ | 18+ | 151+ |
+
+The script does nothing in browsers where the CSS works on its own. The lower limits come from container style queries, which the styling API relies on.
+
+## Limitations
+
+- The active area is measured against the element's nearest scroll container. An ancestor with `overflow: hidden` becomes that container; use `overflow: clip` instead. The fallback always measures against the viewport.
+- The state is a custom property, not a class, so it can't be selected from JavaScript. With the fallback active, elements also get the `pezull-active` class.
+
+## Development
+
+```
+npm test
+```
+
+Runs `test/index.html` in headless Chrome (set `CHROME` to the browser binary if it isn't at the default macOS path). It checks the CSS path, the hover-device gate, and the fallback on its own.
 
 ## Contributing
+
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+
+## License
+
+[ISC](LICENSE)
