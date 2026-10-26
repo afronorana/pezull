@@ -1,0 +1,47 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+<title>pezull tests</title>
+<link rel="stylesheet" href="../pezull.css">
+<style>
+  body { margin: 0; height: 6000px; }
+  .pezull { position: absolute; left: 0; width: 100px; }
+  #short { top: 2000px; height: 100px; }
+  #tall { top: 4000px; height: 900px; }
+  @container style(--pezull: 1) { .child { color: rgb(255, 0, 0); } }
+</style>
+<div class="pezull" id="short"><span class="child">a</span></div>
+<div class="pezull" id="tall"><span class="child">b</span></div>
+<pre id="out">pending</pre>
+<script type="module">
+  const params = new URLSearchParams(location.search);
+  if (params.has('dev')) document.documentElement.classList.add('pezull-dev');
+  const fallback = params.has('fallback');
+  if (fallback) {
+    // Disable the CSS path so only pezull.js can turn elements on
+    document.head.insertAdjacentHTML('beforeend', '<style>.pezull { animation-name: none !important; }</style>');
+    CSS.supports = () => false;
+    (await import('../pezull.js')).default();
+  }
+
+  const frame = () => new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
+  const vh = document.documentElement.clientHeight;
+  // [element id, viewport y of its top edge as a fraction of vh, expected state]
+  const cases = [
+    ['short', 0.10, 0], ['short', 0.19, 0], ['short', 0.21, 1], ['short', 0.50, 1],
+    ['short', 0.79, 1], ['short', 0.81, 0], ['short', 0.95, 0],
+    ['tall', 0.30, 1], ['tall', 0.79, 1], ['tall', 0.10, 0], ['tall', -0.5, 0], ['tall', 0.90, 0],
+  ];
+  const results = [];
+  for (const [id, y, expected] of cases) {
+    const el = document.getElementById(id);
+    scrollBy(0, el.getBoundingClientRect().top - y * vh);
+    await frame(); await frame();
+    const prop = getComputedStyle(el).getPropertyValue('--pezull').trim();
+    const styled = getComputedStyle(el.firstElementChild).color === 'rgb(255, 0, 0)' ? 1 : 0;
+    const active = el.classList.contains('pezull-active') ? 1 : 0;
+    const ok = String(expected) === prop && expected === styled && (!fallback || expected === active);
+    results.push(`${ok ? 'PASS' : 'FAIL'} ${id} top=${Math.round(y * 100)}% expected=${expected} --pezull=${prop} styled=${styled}`);
+  }
+  document.getElementById('out').textContent = results.join('\n');
+</script>

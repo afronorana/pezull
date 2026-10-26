@@ -1,11 +1,30 @@
 {
   "name": "pezull",
   "version": "1.1.0",
-  "description": "Simulate hover effect on touch devices",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "description": "Simulate hover on touch devices with CSS scroll-driven animations",
+  "type": "module",
+  "main": "./pezull.js",
+  "style": "./pezull.css",
+  "exports": {
+    ".": "./pezull.js",
+    "./pezull.css": "./pezull.css"
   },
+  "files": [
+    "pezull.css",
+    "pezull.js"
+  ],
+  "scripts": {
+    "test": "node test/run.mjs"
+  },
+  "keywords": [
+    "hover",
+    "touch",
+    "mobile",
+    "css",
+    "scroll-driven-animations",
+    "view-timeline",
+    "intersection-observer"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/afronorana/pezull.git"
